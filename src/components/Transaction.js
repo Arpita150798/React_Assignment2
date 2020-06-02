@@ -11,30 +11,38 @@ function Transaction(props) {
     onChangeTransaction,
     allTransaction,
     onReverseTransaction,
-    aircraftRequired } = props;
+    aircraftRequired,
+  } = props;
   var summaryReport = false;
   const groupBy = (array, key) => {
     // Return the end result
     return array.reduce((result, currentValue) => {
-      // If an array already present for key, push it to the array. Else create an array and push the object
-    
+      //If an array already present for key, push it to the array. Else create an array and push the object
+      airportData.forEach((airport) => {
+        if (airport.airport_id === Number(currentValue.airport_id)) {
+          currentValue.airport_name = airport.airport_name;
+          //console.log("current airport",currentValue);
+        }
+      });
+      aircraftData.forEach((aircraft) => {
+        if (aircraft.aircraft_id === Number(currentValue.aircraft_id)) {
+          currentValue.aircraft_name = aircraft.aircraft_name;
+          //console.log("current airport",currentValue);
+        }
+      });
       (result[currentValue[key]] = result[currentValue[key]] || []).push(
-        currentValue
+       currentValue
       );
+      if (result != null) {
+        summaryReport = true;
+      }
       // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
       return result;
     }, {}); // empty object is the initial value for result object
   };
+  const fuelConsumption =  groupBy(allTransaction ,'airport_id');;
 
-  // Group by color as key to the person array
- 
-  const fuelConsumptionPerAirport = groupBy(allTransaction, "airport_id");
-  if(fuelConsumptionPerAirport !== []){
-    //console.log("trasnsaction per airport", fuelConsumptionPerAirport);
-    summaryReport = true;
-  }
- 
-  //console.log(airportData);
+  console.log("Summary", fuelConsumption);
   return (
     <React.Fragment>
       <div className="row">
@@ -93,13 +101,17 @@ function Transaction(props) {
                 </select>
               </div>
               <div className="form-group">
-                <label>Aircraft<span className="requiredAstrick">*</span></label>
+                <label>
+                  Aircraft<span className="requiredAstrick">*</span>
+                </label>
                 <select
                   name="aircraft_id"
                   className="form-control"
                   value={newTransaction.aircraft_id}
                   onChange={onChangeTransaction}
-                disabled= {aircraftRequired} required>
+                  disabled={aircraftRequired}
+                  required
+                >
                   <option value="">Select Aircraft</option>
                   {props.aircraftData.map((aircraft) => (
                     <option
@@ -138,11 +150,31 @@ function Transaction(props) {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th onClick={() => props.sortData(allTransaction, "transaction_date_time")}>Transaction Date</th>
+                  <th
+                    onClick={() =>
+                      props.sortData(allTransaction, "transaction_date_time")
+                    }
+                  >
+                    Transaction Date
+                  </th>
                   <th>Transaction Type</th>
-                  <th onClick={() => props.sortData(allTransaction, "quantity")}>Quantity</th>
-                  <th onClick={() => props.sortData(allTransaction, "aircraft_id")}>Aircraft_Id</th>
-                  <th onClick={() => props.sortData(allTransaction, "airport_id")}>Airport_Id</th>
+                  <th
+                    onClick={() => props.sortData(allTransaction, "quantity")}
+                  >
+                    Quantity
+                  </th>
+                  <th
+                    onClick={() =>
+                      props.sortData(allTransaction, "aircraft_id")
+                    }
+                  >
+                    Aircraft_Id
+                  </th>
+                  <th
+                    onClick={() => props.sortData(allTransaction, "airport_id")}
+                  >
+                    Airport_Id
+                  </th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -173,21 +205,32 @@ function Transaction(props) {
       </div>
       <div className="row">
         <h3>Fuel Summary Report</h3>
-        {/* <div className="table-responsive">
-          {summaryReport ? (
+        <div className="table-responsive">
+          {/* {summaryReport ? (
             <div>
-              {fuelConsumptionPerAirport.map((item) => (
-                <ul>
-                  {item.map((airport) => (
-                    <li>{airport.transaction_type}</li>
-                  ))}
-                </ul>
-              ))}
+              {fuelConsumption.map((item) =>
+                airportData
+                  .filter((element) => group.status.includes(element.status))
+                  .map((element, index) => (
+                    <div key={"el_" + index}>
+                      <h1>{element.label}</h1>
+                      <p>{element.status}</p>
+                    </div>
+                  ))
+              )}
             </div>
           ) : (
-            <di>No trasactions yet</di>
-          )}
-        </div> */}
+            <div>No trasactions yet</div>
+          )} */}
+          {/* {fuelConsumption.map((item) =>
+               <li>{item.airport_name}</li>
+          )} */}
+         {fuelConsumption.map((item) => (
+          <ul>
+            {item.map((airport) =><li>{airport.transaction_type}</li>)}
+          </ul>
+        ))}
+        </div>
       </div>
     </React.Fragment>
   );

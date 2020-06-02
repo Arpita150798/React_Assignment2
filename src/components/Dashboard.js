@@ -82,7 +82,6 @@ export class Dashboard extends Component {
   };
   validateTransationForm = () => {
     let valid = true;
-   console.log("valid", this.state.newTransaction);
    this.state.Airports.forEach(airport => {
      if(airport.airport_id === Number(this.state.newTransaction.airport_id) &&
       this.state.newTransaction.transaction_type === "OUT"){
@@ -157,7 +156,7 @@ export class Dashboard extends Component {
           currentTransaction.transaction_type = "IN";
           currentTransaction.quantity = transaction.quantity;
           currentTransaction.aircraft_id = transaction.aircraft_id;
-          currentTransaction.transaction_date_time = transaction.transaction_date_time;
+          currentTransaction.transaction_date_time = new Date().toLocaleString();;
           currentTransaction.airport_id = transaction.airport_id;
          
         }

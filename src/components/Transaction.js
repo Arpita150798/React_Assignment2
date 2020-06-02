@@ -206,30 +206,11 @@ function Transaction(props) {
       <div className="row">
         <h3>Fuel Summary Report</h3>
         <div className="table-responsive">
-          {/* {summaryReport ? (
-            <div>
-              {fuelConsumption.map((item) =>
-                airportData
-                  .filter((element) => group.status.includes(element.status))
-                  .map((element, index) => (
-                    <div key={"el_" + index}>
-                      <h1>{element.label}</h1>
-                      <p>{element.status}</p>
-                    </div>
-                  ))
-              )}
-            </div>
-          ) : (
-            <div>No trasactions yet</div>
-          )} */}
-          {/* {fuelConsumption.map((item) =>
-               <li>{item.airport_name}</li>
-          )} */}
-         {fuelConsumption.map((item) => (
+         {/* {fuelConsumption.map((item) => (
           <ul>
             {item.map((airport) =><li>{airport.transaction_type}</li>)}
           </ul>
-        ))}
+        ))} */}
         </div>
       </div>
     </React.Fragment>

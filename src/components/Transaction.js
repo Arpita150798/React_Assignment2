@@ -53,16 +53,13 @@ function Transaction(props) {
           <div className="row">
                 <div className="col-sm-4"><strong>Fuel Available</strong></div>
               {airportData.map((item, index) => (
-                 <div key={index} className="col-sm-2">
+                 <div key={index}>
                 {
                   item.airport_name === airport_name ?
-                 <ul><strong>{item.fuel_capacity_available}</strong></ul> 
+                 <strong>{item.fuel_capacity_available}</strong> 
                   :
-                  <ul></ul>
+                  <div className="noWidth"></div>
                 }
-                 
-
-                   
                   </div>
                 ))}
               </div>

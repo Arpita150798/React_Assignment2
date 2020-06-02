@@ -138,11 +138,11 @@ function Transaction(props) {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th>Transaction Date</th>
+                  <th onClick={() => props.sortData(allTransaction, "transaction_date_time")}>Transaction Date</th>
                   <th>Transaction Type</th>
-                  <th>Quantity</th>
-                  <th>Aircraft_Id</th>
-                  <th>Airport_Id</th>
+                  <th onClick={() => props.sortData(allTransaction, "quantity")}>Quantity</th>
+                  <th onClick={() => props.sortData(allTransaction, "aircraft_id")}>Aircraft_Id</th>
+                  <th onClick={() => props.sortData(allTransaction, "airport_id")}>Airport_Id</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -193,4 +193,4 @@ function Transaction(props) {
   );
 }
 
-export default Transaction;
+export default SortingHOC(Transaction);

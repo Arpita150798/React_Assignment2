@@ -12,7 +12,7 @@ import {
 } from "../Utils/Models";
 import {  Link} from "react-router-dom";
 import Transaction from "./Transaction";
-
+import SortingHOC from "../Utils/SortingHOC";
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -228,8 +228,8 @@ export class Dashboard extends Component {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th>Airport</th>
-                  <th>Fuel Available</th>
+                  <th onClick={() => this.props.sortData(this.state.Airports, "airport_name")}>Airport</th>
+                  <th onClick={() => this.props.sortData(this.state.Airports, "fuel_capacity_available")}>Fuel Available</th>
                 </tr>
               </thead>
               <tbody>
@@ -250,8 +250,8 @@ export class Dashboard extends Component {
             <table className="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th>Airport</th>
-                  <th>Fuel Available</th>
+                  <th onClick={() => this.props.sortData(this.state.Aircrafts, "aircraft_no")}>Aircraft No</th>
+                  <th onClick={() => this.props.sortData(this.state.Aircrafts, "airline")}>Airline</th>
                 </tr>
               </thead>
               <tbody>
@@ -279,4 +279,4 @@ export class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default SortingHOC(Dashboard);

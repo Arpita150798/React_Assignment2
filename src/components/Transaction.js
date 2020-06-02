@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import SortingHOC from "../Utils/SortingHOC";
+import AirportForm from "./AirportForm";
 function Transaction(props) {
   const {
     airportData,
@@ -18,20 +19,9 @@ function Transaction(props) {
     // Return the end result
     return array.reduce((result, currentValue) => {
       //If an array already present for key, push it to the array. Else create an array and push the object
-      airportData.forEach((airport) => {
-        if (airport.airport_id === Number(currentValue.airport_id)) {
-          currentValue.airport_name = airport.airport_name;
-          //console.log("current airport",currentValue);
-        }
-      });
-      aircraftData.forEach((aircraft) => {
-        if (aircraft.aircraft_id === Number(currentValue.aircraft_id)) {
-          currentValue.aircraft_name = aircraft.aircraft_name;
-          //console.log("current airport",currentValue);
-        }
-      });
+
       (result[currentValue[key]] = result[currentValue[key]] || []).push(
-       currentValue
+        currentValue
       );
       if (result != null) {
         summaryReport = true;
@@ -40,9 +30,67 @@ function Transaction(props) {
       return result;
     }, {}); // empty object is the initial value for result object
   };
-  const fuelConsumption =  groupBy(allTransaction ,'airport_id');;
+  allTransaction.forEach((transaction) => {
+    airportData.forEach((airport) => {
+      if (airport.airport_id === Number(transaction.airport_id)) {
+        transaction.airport_name = airport.airport_name;
+      }
+    });
+    aircraftData.forEach((aircraft) => {
+      if (aircraft.aircraft_id === Number(transaction.aircraft_id)) {
+        transaction.aircraft_name = aircraft.airline;
+      }
+    });
+  });
+  const fuelConsumption = groupBy(allTransaction, "airport_name");
 
-  console.log("Summary", fuelConsumption);
+  const fuelConsumptionList = Object.entries(fuelConsumption).map(
+    ([key, value]) => {
+      let airport_name = key;
+      return (
+        <div>
+          <h4>{key}</h4>
+          <div className="row">
+                <div className="col-sm-4"><strong>Fuel Available</strong></div>
+              {airportData.map((item, index) => (
+                 <div key={index} className="col-sm-2">
+                {
+                  item.airport_name === airport_name ?
+                 <ul><strong>{item.fuel_capacity_available}</strong></ul> 
+                  :
+                  <ul></ul>
+                }
+                 
+
+                   
+                  </div>
+                ))}
+              </div>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Transaction Date</th>
+                <th>Transaction Type</th>
+                <th>Quantity</th>
+                <th>Aircraft</th>
+              </tr>
+            </thead>
+            <tbody>
+              {value.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.transaction_date_time}</td>
+                  <td>{item.transaction_type}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.aircraft_name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+              
+        </div>
+      );
+    }
+  );
   return (
     <React.Fragment>
       <div className="row">
@@ -204,14 +252,10 @@ function Transaction(props) {
         </div>
       </div>
       <div className="row">
-        <h3>Fuel Summary Report</h3>
-        <div className="table-responsive">
-         {/* {fuelConsumption.map((item) => (
-          <ul>
-            {item.map((airport) =><li>{airport.transaction_type}</li>)}
-          </ul>
-        ))} */}
-        </div>
+        <h3 className="text-primary">Fuel Summary Report</h3>
+      </div>
+      <div className="row">
+        <div className="col-sm-6">{fuelConsumptionList}</div>
       </div>
     </React.Fragment>
   );

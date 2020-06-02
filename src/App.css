@@ -74,3 +74,6 @@ th:hover {
 .requiredAstrick{
   color: red;
 }
+.noWidth {
+  width: 0px;
+}
